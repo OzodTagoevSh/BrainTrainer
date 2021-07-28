@@ -90,7 +90,17 @@ public class MainActivity extends AppCompatActivity {
 
         goButton = findViewById(R.id.goButton);
         newQuestion();
+        countDownTimer = new CountDownTimer(30000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerTextView.setText((int) millisUntilFinished / 1000 + "s");
+            }
 
+            @Override
+            public void onFinish() {
+
+            }
+        }.start();
 
     }
 }
