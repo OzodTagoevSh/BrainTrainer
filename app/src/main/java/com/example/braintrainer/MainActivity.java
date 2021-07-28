@@ -1,6 +1,7 @@
 package com.example.braintrainer;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -23,12 +24,39 @@ public class MainActivity extends AppCompatActivity {
     Button button1;
     Button button2;
     Button button3;
+    Button playAgainButton;
+    ConstraintLayout gameLayout;
     int score = 0;
     int numberOfQuestions = 0;
     ArrayList<Integer> answers = new ArrayList<>();
 
     public void start(View view) {
         goButton.setVisibility(View.INVISIBLE);
+        gameLayout.setVisibility(View.VISIBLE);
+        playAgain(findViewById(R.id.resultTextView));
+    }
+
+    public void playAgain(View view) {
+        score = 0;
+        numberOfQuestions = 0;
+        scoreTextView.setText(score + "/" + numberOfQuestions);
+        timerTextView.setText("30s");
+        playAgainButton.setVisibility(View.INVISIBLE);
+        resultTextView.setText("");
+        newQuestion();
+        countDownTimer = new CountDownTimer(30100, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timerTextView.setText((int) millisUntilFinished / 1000 + "s");
+            }
+
+            @Override
+            public void onFinish() {
+                playAgainButton.setVisibility(View.VISIBLE);
+                resultTextView.setText("Done!");
+                countDownTimer.cancel();
+            }
+        }.start();
     }
 
     public void chooseAnswer(View view) {
@@ -87,20 +115,11 @@ public class MainActivity extends AppCompatActivity {
         button1 = findViewById(R.id.button1);
         button2 = findViewById(R.id.button2);
         button3 = findViewById(R.id.button3);
+        playAgainButton = findViewById(R.id.playAgainButton);
+        gameLayout = findViewById(R.id.gameLayout);
+        gameLayout.setVisibility(View.INVISIBLE);
 
         goButton = findViewById(R.id.goButton);
-        newQuestion();
-        countDownTimer = new CountDownTimer(30000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                timerTextView.setText((int) millisUntilFinished / 1000 + "s");
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-
+        goButton.setVisibility(View.VISIBLE);
     }
 }
